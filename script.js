@@ -89,6 +89,12 @@ const createUsernames = function (acc) {
 };
 createUsernames(accounts);
 
+// CALCULATE BALANCE
+const calcBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, cur) => acc + cur, 0);
+  labelBalance.textContent = `💲${balance}`;
+};
+
 // CALCULATE SUMMARY
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
@@ -135,7 +141,7 @@ btnLogin.addEventListener('click', function (e) {
     displayMovements(currentAccount);
 
     // DISPLAY BALANCE
-
+    calcBalance(currentAccount);
     // DISPLAY SUMMARY
     calcDisplaySummary(currentAccount);
   }
