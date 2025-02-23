@@ -62,9 +62,9 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 // Display Movements
-const displayMovements = function (movements) {
+const displayMovements = function (accs) {
   containerMovements.innerHTML = '';
-  movements.forEach(function (mov, i) {
+  accs.movements.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
             <div class="movements__row">
@@ -77,14 +77,9 @@ const displayMovements = function (movements) {
   });
 };
 
-displayMovements(account1.movements);
-
 // COMPUTING USERNAMES
-
-const owner = 'Steven Thomas Williams';
-
-const createUsernames = function (accs) {
-  accs.forEach(acc => {
+const createUsernames = function (acc) {
+  acc.forEach(acc => {
     acc.username = acc.owner
       .toLowerCase()
       .split(' ')
@@ -94,7 +89,33 @@ const createUsernames = function (accs) {
 };
 createUsernames(accounts);
 
-console.log(accounts);
+// IMPLEMENTING LOGIN
+let currentAccount;
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // DISPLAY UI AND MESSAGE
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
+
+    containerApp.style.opacity = 1;
+
+    // Clear inputs and blur
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+    inputLoginUsername.blur();
+    // DISPLAY MOVEMENTS
+    displayMovements(currentAccount);
+    // DISPLAY BALANCE
+
+    // DISPLAY SUMMARY
+  }
+});
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
