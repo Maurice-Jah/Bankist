@@ -240,3 +240,13 @@ const balance = movements.reduce((acc, cur, i, arr) => acc + cur, 0);
 //     console.log(acc);
 //   }
 // }
+
+// ================== SOME METHOD =============
+// == Takes a callback function but to test condition
+// includes checks for equality
+
+const anyDeposits = movements.some(mov => mov > 0);
+console.log(anyDeposits);
+
+const anyDeposits2 = account4.movements.every(mov => mov > 0);
+console.log(anyDeposits2);
