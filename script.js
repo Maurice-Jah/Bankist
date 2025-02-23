@@ -89,6 +89,29 @@ const createUsernames = function (acc) {
 };
 createUsernames(accounts);
 
+// CALCULATE SUMMARY
+const calcDisplaySummary = function (acc) {
+  const incomes = acc.movements
+    .filter(mov => mov > 0)
+    .reduce((acc, cur) => acc + cur, 0);
+  labelSumIn.textContent = `${incomes}💲`;
+
+  const out = acc.movements
+    .filter(mov => mov < 0)
+    .reduce((acc, cur) => acc + cur, 0);
+  labelSumOut.textContent = `${Math.abs(out)}💲`;
+
+  const interest = acc.movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * acc.interestRate) / 100)
+    .filter(int => int >= 1)
+    .reduce((acc, int) => acc + int, 0);
+
+  labelSumInterest.textContent = `${interest}`;
+};
+
+console.log(calcDisplaySummary(account3));
+
 // IMPLEMENTING LOGIN
 let currentAccount;
 btnLogin.addEventListener('click', function (e) {
@@ -114,6 +137,7 @@ btnLogin.addEventListener('click', function (e) {
     // DISPLAY BALANCE
 
     // DISPLAY SUMMARY
+    calcDisplaySummary(currentAccount);
   }
 });
 
@@ -164,12 +188,12 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 // ====== Filter method ====== Returns array that meets up with the criteria
 const deposits = movements.filter(mov => mov < 0);
-console.log(deposits);
+// console.log(deposits);
 
 // ===== REDUCE... Gives just a value. the first is the accumulator
 
 const balance = movements.reduce((acc, cur, i, arr) => acc + cur, 0);
-console.log(balance);
+// console.log(balance);
 
 // Get the largest of the array
 
