@@ -79,6 +79,23 @@ const displayMovements = function (movements) {
 
 displayMovements(account1.movements);
 
+// COMPUTING USERNAMES
+
+const owner = 'Steven Thomas Williams';
+
+const createUsernames = function (accs) {
+  accs.forEach(acc => {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name.at(0))
+      .join('');
+  });
+};
+createUsernames(accounts);
+
+console.log(accounts);
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -135,8 +152,24 @@ console.log(balance);
 
 // Get the largest of the array
 
-const maxi = movements.reduce(
-  (acc, cur) => (acc < cur ? acc : cur),
-  movements[0]
-);
-console.log(maxi);
+// const maxi = movements.reduce(
+//   (acc, cur) => (acc < cur ? acc : cur),
+//   movements[0]
+// );
+// console.log(maxi);
+
+// USING MAPS=== It creates a brand new array and does not mutate arrary
+// const curToUsd = 1.1;
+// const newMoney = movements.map(mov => mov * curToUsd);
+// console.log(newMoney);
+
+// FIND METHOD ===  To retrieve one element based on a condition while FILTER returns all and are all arrays
+// console.log(movements.find(mov => mov > 0));
+// const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+// // account.username = 'jd';
+
+// for (const acc of accounts) {
+//   if (acc.owner === 'Jessica Davis') {
+//     console.log(acc);
+//   }
+// }
