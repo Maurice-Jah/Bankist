@@ -110,8 +110,6 @@ const calcDisplaySummary = function (acc) {
   labelSumInterest.textContent = `${interest}`;
 };
 
-console.log(calcDisplaySummary(account3));
-
 // IMPLEMENTING LOGIN
 let currentAccount;
 btnLogin.addEventListener('click', function (e) {
@@ -132,12 +130,36 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
     inputLoginUsername.blur();
+
     // DISPLAY MOVEMENTS
     displayMovements(currentAccount);
+
     // DISPLAY BALANCE
 
     // DISPLAY SUMMARY
     calcDisplaySummary(currentAccount);
+  }
+});
+
+// CLOSE ACCOUNT --- USING FINDINDEX
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+  if (
+    currentAccount.username === inputCloseUsername.value &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+
+    // Delete account
+    accounts.splice(index, 1);
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+
+    // Clear inputs and blur
+    inputCloseUsername.value = inputClosePin.value = '';
   }
 });
 
