@@ -343,3 +343,22 @@ const movementsUI2 = Array.from(
   document.querySelectorAll('.movements__value')
 ).map(el => Number(el.textContent.slice(0, -1)));
 // console.log(movementsUI2);
+
+// ==================================== FLAT ADN FLATMAP=========================
+// FLAT === GOES only 1 level deep
+// FLATMAP === Goes only 1 level deep
+
+const arrs = [2, 5, 6, [5, [8, [5, 6]]]];
+console.log(arrs.flat(3));
+
+const allAccounts = Array.from(accounts.map(acc => acc.movements))
+  .flat()
+  .reduce((acc, cur) => acc + cur, 0);
+console.log(allAccounts);
+
+// Using Flatmap
+const totalAccount = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, cur) => acc + cur, 0);
+
+console.log(totalAccount);
