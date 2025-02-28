@@ -313,4 +313,33 @@ console.log(anyDeposits2);
 // If  b > a === keep < 0,,,, A B
 // if a > b == switch > 0 .... B A
 
-console.log(movements.sort((a, b) => b - a));
+// console.log(movements.sort((a, b) => b - a));
+
+// Creating new arrarys
+
+const newArray = new Array(7);
+newArray.fill(5);
+// console.log(newArray);
+
+const y = Array.from({ length: 7 }, () => 1);
+// console.log(y);
+
+const rand = Math.trunc(Math.random() * 8) + 1;
+const myArr = new Array(10);
+
+let mine = [];
+for (let i = 0; i < 10; i++) {
+  const rand = Math.trunc(Math.random() * 8) + 1;
+  mine.push(rand);
+}
+// Array with 100 dice rolls
+const z = Array.from({ length: 100 }, () => Math.trunc(Math.random() * 8) + 1);
+// console.log(z);
+
+// console.log(mine);
+
+// Using Array.from to convert Nodelist to array
+const movementsUI2 = Array.from(
+  document.querySelectorAll('.movements__value')
+).map(el => Number(el.textContent.slice(0, -1)));
+// console.log(movementsUI2);
