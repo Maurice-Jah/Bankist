@@ -62,9 +62,14 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 // Display Movements
-const displayMovements = function (accs) {
+const displayMovements = function (acc, sort) {
   containerMovements.innerHTML = '';
-  accs.movements.forEach(function (mov, i) {
+
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
             <div class="movements__row">
@@ -208,6 +213,14 @@ btnClose.addEventListener('click', function (e) {
   }
 });
 
+// IMPLENTIING SORTING
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount, !sorted);
+  sorted = !sorted;
+});
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -295,3 +308,9 @@ console.log(anyDeposits);
 
 const anyDeposits2 = account4.movements.every(mov => mov > 0);
 console.log(anyDeposits2);
+
+// USING THE SORTING OF ARRAY
+// If  b > a === keep < 0,,,, A B
+// if a > b == switch > 0 .... B A
+
+console.log(movements.sort((a, b) => b - a));
