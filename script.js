@@ -354,11 +354,18 @@ console.log(arrs.flat(3));
 const allAccounts = Array.from(accounts.map(acc => acc.movements))
   .flat()
   .reduce((acc, cur) => acc + cur, 0);
-console.log(allAccounts);
+// console.log(allAccounts);
 
 // Using Flatmap
 const totalAccount = accounts
   .flatMap(acc => acc.movements)
   .reduce((acc, cur) => acc + cur, 0);
 
-console.log(totalAccount);
+// console.log(totalAccount);
+
+// MORE PRACICE ON ARRAYS
+const bankDeposits = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov > 0)
+  .reduce((acc, cur) => acc + cur, 0);
+console.log(bankDeposits);
