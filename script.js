@@ -267,8 +267,8 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // });
 
 // ====== Filter method ====== Returns array that meets up with the criteria
-const deposits = movements.filter(mov => mov < 0);
-// console.log(deposits);
+const deposits1 = movements.filter(mov => mov < 0);
+// console.log(deposits1);
 
 // ===== REDUCE... Gives just a value. the first is the accumulator
 
@@ -368,4 +368,48 @@ const bankDeposits = accounts
   .flatMap(acc => acc.movements)
   .filter(mov => mov > 0)
   .reduce((acc, cur) => acc + cur, 0);
-console.log(bankDeposits);
+// console.log(bankDeposits);
+
+// 2. Deposits more than 1000
+const numDeposits1000 = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov >= 1000).length;
+
+// Using reduce
+const numDeposits1000Reduce = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((count, cur) => (cur >= 1000 ? count + 1 : count), 0);
+// console.log(numDeposits1000Reduce);
+
+// 3. Calculate all sums using reduce
+const { deposits, withdrawals } = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (acc, cur) => {
+      // cur > 0 ? (acc.deposits += cur) : (acc.withdrawals += cur);
+
+      acc[cur > 0 ? 'deposits' : 'withdrawals'] += cur;
+      return acc;
+    },
+
+    { deposits: 0, withdrawals: 0 }
+  );
+// console.log(deposits, withdrawals);
+
+//
+// 4. CONVERT TITLE CASE
+const convertToTitleCase = function (word) {
+  const capitalize = str => str[0].toUpperCase() + str.slice(1);
+  const expections = ['a', 'an', 'the', 'and'];
+  const titleCase = word
+    .toLowerCase()
+    .split(' ')
+    .map(word => (expections.includes(word) ? word : capitalize(word)))
+    .join(' ');
+
+  return capitalize(titleCase);
+};
+
+console.log(convertToTitleCase('this is a nice title'));
+console.log(convertToTitleCase('this is a NICE title'));
+console.log(convertToTitleCase('and is a NICE title'));
