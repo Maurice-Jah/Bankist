@@ -97,13 +97,22 @@ const displayMovements = function (acc, sort) {
     : acc.movements;
 
   movs.forEach(function (mov, i) {
+    const now = new Date(acc.movementsDates[i]);
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const date = `${now.getDate()}`.padStart(2, '0');
+
+    const displayDate = `${date}/${month}/${year}`;
+
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
             <div class="movements__row">
               <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type} </div>
+            <div class="movements__date">${displayDate}</div>
            <div class="movements__value">${mov}€</div>
+           
            </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
@@ -160,6 +169,16 @@ const updateUI = function (acc) {
 
 // IMPLEMENTING LOGIN
 let currentAccount;
+
+const now = new Date();
+const year = now.getFullYear();
+const month = String(now.getMonth() + 1).padStart(2, '0');
+const date = `${now.getDate()}`.padStart(2, '0');
+const hour = `${now.getHours()}`.padStart(2, '0');
+const min = `${now.getMinutes()}`.padStart(2, '0');
+
+labelDate.textContent = `${date}/${month}/${year} ${hour}:${min}`;
+
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -202,6 +221,9 @@ btnTransfer.addEventListener('click', function (e) {
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
 
+    currentAccount.movementsDates.push(new Date().toISOString());
+    receiverAcc.movementsDates.push(new Date().toISOString());
+
     updateUI(currentAccount);
   }
 });
@@ -212,6 +234,7 @@ btnLoan.addEventListener('click', function (e) {
   const amount = Number(inputLoanAmount.value);
   if (amount > 0 && currentAccount.movements.some(mov => mov > amount * 0.1)) {
     currentAccount.movements.push(amount);
+    currentAccount.movementsDates.push(new Date().toISOString());
     updateUI(currentAccount);
   }
 
@@ -333,8 +356,8 @@ const balance = movements.reduce((acc, cur, i, arr) => acc + cur, 0);
 const anyDeposits = movements.some(mov => mov > 0);
 console.log(anyDeposits);
 
-const anyDeposits2 = account4.movements.every(mov => mov > 0);
-console.log(anyDeposits2);
+// const anyDeposits2 = account4.movements.every(mov => mov > 0);
+// console.log(anyDeposits2);
 
 // USING THE SORTING OF ARRAY
 // If  b > a === keep < 0,,,, A B
@@ -437,6 +460,6 @@ const convertToTitleCase = function (word) {
   return capitalize(titleCase);
 };
 
-console.log(convertToTitleCase('this is a nice title'));
-console.log(convertToTitleCase('this is a NICE title'));
-console.log(convertToTitleCase('and is a NICE title'));
+// console.log(convertToTitleCase('this is a nice title'));
+// console.log(convertToTitleCase('this is a NICE title'));
+// console.log(convertToTitleCase('and is a NICE title'));
