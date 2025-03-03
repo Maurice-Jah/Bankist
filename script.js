@@ -37,9 +37,9 @@ const account2 = {
     '2019-12-25T06:04:23.907Z',
     '2020-01-25T14:18:46.235Z',
     '2020-02-05T16:33:06.386Z',
-    '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
+    '2025-02-25T14:43:26.374Z',
+    '2025-02-27T18:49:59.371Z',
+    '2025-03-01T12:01:20.894Z',
   ],
   currency: 'USD',
   locale: 'en-US',
@@ -88,6 +88,22 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+// //////////////////  FUNCTIONS
+const formatMovementDate = function (date) {
+  const calDaysPassed = (date2, date1) =>
+    Math.round(Math.abs(date2 - date1) / (24 * 60 * 60 * 1000));
+
+  const daysPassed = calDaysPassed(new Date(), date);
+  if (daysPassed === 0) return 'Today';
+  if (daysPassed === 1) return 'Yesterday';
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
+
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = `${now.getDate()}`.padStart(2, '0');
+  return `${day}/${month}/${year}`;
+};
+
 // Display Movements
 const displayMovements = function (acc, sort) {
   containerMovements.innerHTML = '';
@@ -97,12 +113,8 @@ const displayMovements = function (acc, sort) {
     : acc.movements;
 
   movs.forEach(function (mov, i) {
-    const now = new Date(acc.movementsDates[i]);
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const date = `${now.getDate()}`.padStart(2, '0');
-
-    const displayDate = `${date}/${month}/${year}`;
+    const date = new Date(acc.movementsDates[i]);
+    const displayDate = formatMovementDate(date);
 
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
