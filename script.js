@@ -89,7 +89,7 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 // //////////////////  FUNCTIONS
-const formatMovementDate = function (date) {
+const formatMovementDate = function (date, locale) {
   const calDaysPassed = (date2, date1) =>
     Math.round(Math.abs(date2 - date1) / (24 * 60 * 60 * 1000));
 
@@ -98,10 +98,7 @@ const formatMovementDate = function (date) {
   if (daysPassed === 1) return 'Yesterday';
   if (daysPassed <= 7) return `${daysPassed} days ago`;
 
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = `${now.getDate()}`.padStart(2, '0');
-  return `${day}/${month}/${year}`;
+  return new Intl.DateTimeFormat(locale).format(date);
 };
 
 // Display Movements
@@ -114,7 +111,7 @@ const displayMovements = function (acc, sort) {
 
   movs.forEach(function (mov, i) {
     const date = new Date(acc.movementsDates[i]);
-    const displayDate = formatMovementDate(date);
+    const displayDate = formatMovementDate(date, acc.locale);
 
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
@@ -181,16 +178,6 @@ const updateUI = function (acc) {
 
 // IMPLEMENTING LOGIN
 let currentAccount;
-
-const now = new Date();
-const year = now.getFullYear();
-const month = String(now.getMonth() + 1).padStart(2, '0');
-const date = `${now.getDate()}`.padStart(2, '0');
-const hour = `${now.getHours()}`.padStart(2, '0');
-const min = `${now.getMinutes()}`.padStart(2, '0');
-
-labelDate.textContent = `${date}/${month}/${year} ${hour}:${min}`;
-
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -204,6 +191,20 @@ btnLogin.addEventListener('click', function (e) {
     }`;
 
     containerApp.style.opacity = 1;
+
+    const now = new Date();
+    const locale = currentAccount.locale;
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric',
+    };
+
+    labelDate.textContent = new Intl.DateTimeFormat(locale, options).format(
+      now
+    );
 
     // Clear inputs and blur
     inputLoginUsername.value = inputLoginPin.value = '';
